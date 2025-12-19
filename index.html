@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinAnalyzer - Financial Analysis Software</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script> <!-- Razorpay Script -->
+    <style>
+        /* Same styles as before, with minor tweaks for new sections */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .hero {
+            text-align: center;
+            padding: 50px 0;
+        }
+        .features, .testimonials {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            margin: 40px 0;
+        }
+        .feature, .testimonial {
+            background: white;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 30%;
+            min-width: 250px;
+        }
+        .subscription {
+            background: #e9ecef;
+            padding: 40px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 40px 0;
+        }
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        input, button {
+            display: block;
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .legal {
+            margin: 40px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FinAnalyzer</h1>
+        <p>Powerful Financial Analysis Software for Smarter Decisions</p>
+        <p>Visit us at: <a href="https://finanalyzer.in" style="color: white;">finanalyzer.in</a></p> <!-- Suggested domain -->
+    </header>
+
+    <div class="container">
+        <section class="hero">
+            <h2>Analyze Your Finances Like a Pro</h2>
+            <p>FinAnalyzer is a trusted tool used by thousands to track budgets, analyze stocks, and generate reports. Backed by real user data and expert insights.</p>
+        </section>
+
+        <section class="features">
+            <div class="feature">
+                <h3>Budget Tracking</h3>
+                <p>Monitor expenses and income with real-time dashboards.</p>
+            </div>
+            <div class="feature">
+                <h3>Stock Analysis</h3>
+                <p>Analyze market trends and predict performance with AI-powered insights.</p>
+            </div>
+            <div class="feature">
+                <h3>Custom Reports</h3>
+                <p>Generate detailed financial reports tailored to your needs.</p>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <div class="testimonial">
+                <p>"FinAnalyzer saved me hours on my taxes. Highly recommend!" - Rajesh K., Mumbai</p>
+            </div>
+            <div class="testimonial">
+                <p>"Accurate stock predictions helped me invest wisely." - Priya S., Delhi</p>
+            </div>
+            <div class="testimonial">
+                <p>"User-friendly and reliable for small businesses." - Anil M., Bangalore</p>
+            </div>
+        </section>
+
+        <section class="subscription">
+            <h2>Premium Subscription</h2>
+            <p>Unlock unlimited access to all features, priority support, and exclusive updates.</p>
+            <p><strong>Price: ₹1200 per year</strong></p>
+            <button id="rzp-button1">Pay with Razorpay</button>
+        </section>
+
+        <section class="legal">
+            <h3>Financial Disclaimer</h3>
+            <p>FinAnalyzer provides tools for financial analysis but does not offer personalized financial advice. All data and insights are for informational purposes only. Users should consult qualified professionals for investment decisions. We are not liable for any financial losses.</p>
+            
+            <h3>Terms of Service</h3>
+            <p>By using FinAnalyzer, you agree to our terms. Subscription is non-refundable. We reserve the right to modify services. All content is proprietary.</p>
+            
+            <h3>Privacy Policy</h3>
+            <p>We collect email and name for subscriptions. Data is encrypted and not shared without consent. Contact us for data requests.</p>
+        </section>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 FinAnalyzer. All rights reserved. | Contact: support@finanalyzer.in</p>
+    </footer>
+
+    <script>
+        // Razorpay Integration (Test Mode)
+        var options = {
+            "key": "rzp_test_your_test_key_here", // Replace with your Razorpay test key
+            "amount": "120000", // ₹1200 in paise (100 paise = 1 INR)
+            "currency": "INR",
+            "name": "FinAnalyzer",
+            "description": "Premium Subscription",
+            "image": "https://example.com/logo.png", // Add your logo URL
+            "handler": function (response){
+                alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+                // Here, send response to your server for verification
+            },
+            "prefill": {
+                "name": "User Name",
+                "email": "user@example.com"
+            },
+            "theme": {
+                "color": "#007bff"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        document.getElementById('rzp-button1').onclick = function(e){
+            rzp1.open();
+            e.preventDefault();
+        };
+    </script>
+</body>
+</html>
