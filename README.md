@@ -1,1 +1,14 @@
-# finanalyzer
+# finanalyzer.inn
+
+
+
+
+
+
+
+
+
+
+
+
+
