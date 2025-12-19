@@ -2,66 +2,96 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FinAnalyzer</title>
-    <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
-    <style>body{font-family:Arial,sans-serif;margin:0;padding:0;background:#f4f4f4;color:#333}header{background:#007bff;color:white;padding:20px;text-align:center}.container{max-width:1200px;margin:0 auto;padding:20px}.hero{text-align:center;padding:50px 0}.features{display:flex;flex-wrap:wrap;justify-content:space-around;margin:40px 0}.feature{background:white;padding:20px;margin:10px;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,0.1);width:30%;min-width:250px}.subscription{background:#e9ecef;padding:40px;text-align:center;border-radius:8px;margin:40px 0}button{display:block;width:100%;max-width:400px;margin:10px auto;padding:10px;border:1px solid #ccc;border-radius:4px;background:#28a745;color:white;cursor:pointer}button:hover{background:#218838}.legal{margin:40px 0;padding:20px;background:white;border-radius:8px}footer{text-align:center;padding:20px;background:#007bff;color:white}</style>
+    <title>Stock Analysis</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            text-align: center;
+            padding: 40px;
+        }
+
+        h1 {
+            color: #2c3e50;
+        }
+
+        .container {
+            margin: 20px;
+        }
+
+        input {
+            padding: 10px;
+            width: 220px;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #3498db;
+            color: white;
+            border: none;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <h1>FinAnalyzer</h1>
-        <p>Powerful Financial Analysis Software</p>
-        <p>Visit: <a href="https://finanalyzer.in" style="color:white">finanalyzer.in</a></p>
-    </header>
-    <div class="container">
-        <section class="hero">
-            <h2>Analyze Finances Fast</h2>
-            <p>Track budgets, analyze stocks, generate reports in minutes.</p>
-        </section>
-        <section class="features">
-            <div class="feature"><h3>Budget Tracking</h3><p>Real-time dashboards.</p></div>
-            <div class="feature"><h3>Stock Analysis</h3><p>AI insights.</p></div>
-            <div class="feature"><h3>Custom Reports</h3><p>Tailored outputs.</p></div>
-        </section>
-        <section class="subscription">
-            <h2>Premium Subscription</h2>
-            <p>₹1200/year - Pay securely via Razorpay (includes UPI) or direct UPI.</p>
-            <button id="rzp-btn">Pay with Razorpay (UPI Available)</button>
-            <button id="upi-btn">Pay via UPI (Direct)</button>
-            <p style="font-size:12px;">Direct UPI: Open your app and confirm payment to anshulkanwar2007@okicici.</p>
-        </section>
-        <section class="legal">
-            <h3>Disclaimer</h3><p>Not financial advice. Consult pros.</p>
-            <h3>TOS</h3><p>Non-refundable. Proprietary.</p>
-            <h3>Privacy</h3><p>Data encrypted.</p>
-        </section>
-    </div>
-    <footer><p>&copy; 2023 FinAnalyzer | support@finanalyzer.in</p></footer>
-    <script>
-        // Razorpay with UPI enabled
-        var options = {
-            "key": "rzp_test_your_key", // Replace with your Razorpay test key
-            "amount": "120000", // ₹1200 in paise
-            "currency": "INR",
-            "name": "FinAnalyzer",
-            "description": "Premium Subscription",
-            "handler": function(r) { alert("Payment Successful! ID: " + r.razorpay_payment_id); },
-            "prefill": { "email": "user@example.com" },
-            "theme": { "color": "#007bff" }
-        };
-        var rzp = new Razorpay(options);
-        document.getElementById('rzp-btn').onclick = function(e) {
-            rzp.open();
-            e.preventDefault();
-        };
 
-        // Direct UPI Deep Link
-        document.getElementById('upi-btn').onclick = function(e) {
-            e.preventDefault();
-            var upiUrl = "upi://pay?pa=anshulkanwar2007@okicici&pn=FinAnalyzer&am=1200&cu=INR&tn=Premium Subscription";
-            window.location.href = upiUrl; // Opens UPI app
-            alert("If your UPI app doesn't open, copy this link: " + upiUrl);
-        };
+    <h1>📈 Stock Analysis Website</h1>
+
+    <div class="container">
+        <input type="text" id="symbol" placeholder="Enter stock symbol (e.g. AAPL)">
+        <button onclick="getStock()">Analyze</button>
+    </div>
+
+    <div id="result"></div>
+
+    <script>
+        async function getStock() {
+            const symbol = document.getElementById("symbol").value.toUpperCase();
+            const result = document.getElementById("result");
+
+            if (!symbol) {
+                result.innerHTML = "⚠️ Please enter a stock symbol.";
+                return;
+            }
+
+            const apiKey = "YOUR_API_KEY_HERE";
+            const url = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${symbol}&apikey=${apiKey}`;
+
+            result.innerHTML = "Loading...";
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                const stock = data["Global Quote"];
+
+                if (!stock || !stock["05. price"]) {
+                    result.innerHTML = "❌ Stock not found.";
+                    return;
+                }
+
+                result.innerHTML = `
+                    <strong>${symbol}</strong><br>
+                    Price: $${stock["05. price"]}<br>
+                    Change: ${stock["09. change"]}<br>
+                    Change %: ${stock["10. change percent"]}
+                `;
+            } catch (error) {
+                result.innerHTML = "⚠️ Error fetching data.";
+            }
+        }
     </script>
+
 </body>
 </html>
