@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FinAnalyzer</title>
     <script src="https://checkout.razorpay.com/v1/checkout.js" defer></script>
-    <style>body{font-family:Arial,sans-serif;margin:0;padding:0;background:#f4f4f4;color:#333}header{background:#007bff;color:white;padding:20px;text-align:center}.container{max-width:1200px;margin:0 auto;padding:20px}.hero{text-align:center;padding:50px 0}.features{display:flex;flex-wrap:wrap;justify-content:space-around;margin:40px 0}.feature{background:white;padding:20px;margin:10px;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,0.1);width:30%;min-width:250px}.subscription{background:#e9ecef;padding:40px;text-align:center;border-radius:8px;margin:40px 0}button{display:block;width:100%;max-width:400px;margin:10px auto;padding:10px;border:1px solid #ccc;border-radius:4px;background:#28a745;color:white;cursor:pointer}button:hover{background:#218838}.legal{margin:40px 0;padding:20px;background:white;border-radius:8px}footer{text-align:center;padding:20px;background:#007bff;color:white}table{width:100%;border-collapse:collapse;margin:20px 0}th,td{border:1px solid #ddd;padding:8px;text-align:left}th{background:#f2f2f2}input,select{display:block;margin:5px 0;padding:8px;width:100%;max-width:300px;border:1px solid #ccc;border-radius:4px}.budget-tracker{background:white;padding:20px;margin:40px 0;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,0.1)}</style>
+    <style>body{font-family:Arial,sans-serif;margin:0;padding:0;background:#f4f4f4;color:#333}header{background:#007bff;color:white;padding:20px;text-align:center}.container{max-width:1200px;margin:0 auto;padding:20px}.hero{text-align:center;padding:50px 0}.features{display:flex;flex-wrap:wrap;justify-content:space-around;margin:40px 0}.feature{background:white;padding:20px;margin:10px;border-radius:8px;box-shadow:0 0 10px rgba(0,0,0,0.1);width:30%;min-width:250px}.subscription{background:#e9ecef;padding:40px;text-align:center;border-radius:8px;margin:40px 0}button{display:block;width:100%;max-width:400px;margin:10px auto;padding:10px;border:1px solid #ccc;border-radius:4px;background:#28a745;color:white;cursor:pointer}button:hover{background:#218838}.legal{margin:40px 0;padding:20px;background:white;border-radius:8px}footer{text-align:center;padding:20px;background:#007bff;color:white}</style>
 </head>
 <body>
     <header>
@@ -23,27 +23,6 @@
             <div class="feature"><h3>Stock Analysis</h3><p>AI insights.</p></div>
             <div class="feature"><h3>Custom Reports</h3><p>Tailored outputs.</p></div>
         </section>
-        <section class="budget-tracker">
-            <h2>Budget Tracker</h2>
-            <div>
-                <input type="text" id="desc" placeholder="Description (e.g., Salary)">
-                <input type="number" id="amount" placeholder="Amount (₹)">
-                <select id="type">
-                    <option value="income">Income</option>
-                    <option value="expense">Expense</option>
-                </select>
-                <button onclick="addEntry()">Add Entry</button>
-            </div>
-            <table id="budget-table">
-                <thead><tr><th>Description</th><th>Amount (₹)</th><th>Type</th><th>Action</th></tr></thead>
-                <tbody id="entries"></tbody>
-            </table>
-            <div>
-                <p>Total Income: ₹<span id="total-income">0</span></p>
-                <p>Total Expenses: ₹<span id="total-expenses">0</span></p>
-                <p>Balance: ₹<span id="balance">0</span></p>
-            </div>
-        </section>
         <section class="subscription">
             <h2>Premium Subscription</h2>
             <p>₹1200/year - Pay securely via Razorpay (includes UPI) or direct UPI.</p>
@@ -59,54 +38,10 @@
     </div>
     <footer><p>&copy; 2023 FinAnalyzer | support@finanalyzer.in</p></footer>
     <script>
-        // Budget Tracker JS
-        let entries = JSON.parse(localStorage.getItem('budgetEntries')) || [];
-        const entriesEl = document.getElementById('entries');
-        const totalIncomeEl = document.getElementById('total-income');
-        const totalExpensesEl = document.getElementById('total-expenses');
-        const balanceEl = document.getElementById('balance');
-
-        function renderEntries() {
-            entriesEl.innerHTML = '';
-            let totalIncome = 0, totalExpenses = 0;
-            entries.forEach((entry, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>${entry.desc}</td><td>${entry.amount}</td><td>${entry.type}</td><td><button onclick="deleteEntry(${index})">Delete</button></td>`;
-                entriesEl.appendChild(row);
-                if (entry.type === 'income') totalIncome += entry.amount;
-                else totalExpenses += entry.amount;
-            });
-            totalIncomeEl.textContent = totalIncome;
-            totalExpensesEl.textContent = totalExpenses;
-            balanceEl.textContent = totalIncome - totalExpenses;
-            localStorage.setItem('budgetEntries', JSON.stringify(entries));
-        }
-
-        function addEntry() {
-            const desc = document.getElementById('desc').value;
-            const amount = parseFloat(document.getElementById('amount').value);
-            const type = document.getElementById('type').value;
-            if (desc && amount > 0) {
-                entries.push({ desc, amount, type });
-                renderEntries();
-                document.getElementById('desc').value = '';
-                document.getElementById('amount').value = '';
-            } else {
-                alert('Please enter valid details.');
-            }
-        }
-
-        function deleteEntry(index) {
-            entries.splice(index, 1);
-            renderEntries();
-        }
-
-        renderEntries(); // Load on page load
-
-        // Razorpay with UPI
+        // Razorpay with UPI enabled
         var options = {
             "key": "rzp_test_your_key", // Replace with your Razorpay test key
-            "amount": "120000",
+            "amount": "120000", // ₹1200 in paise
             "currency": "INR",
             "name": "FinAnalyzer",
             "description": "Premium Subscription",
@@ -120,11 +55,11 @@
             e.preventDefault();
         };
 
-        // Direct UPI
+        // Direct UPI Deep Link
         document.getElementById('upi-btn').onclick = function(e) {
             e.preventDefault();
             var upiUrl = "upi://pay?pa=anshulkanwar2007@okicici&pn=FinAnalyzer&am=1200&cu=INR&tn=Premium Subscription";
-            window.location.href = upiUrl;
+            window.location.href = upiUrl; // Opens UPI app
             alert("If your UPI app doesn't open, copy this link: " + upiUrl);
         };
     </script>
